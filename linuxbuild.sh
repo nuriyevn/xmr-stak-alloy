@@ -2,7 +2,7 @@
 
 CMAKE_PREFIX_PART='hwloc'
 
-cmake -DCUDA_ENABLE=OFF -DMICROHTTPD_ENABLE=OFF -DOpenSSL_ENABLE=OFF  -DOpenCL_ENABLE=OFF -DXMR-STAK_COMPILE=generic -DCMAKE_LINK_STATIC=ON .
+cmake -DCUDA_ENABLE=OFF -DMICROHTTPD_ENABLE=OFF -DOpenSSL_ENABLE=OFF  -DOpenCL_ENABLE=OFF -DXMR-STAK_COMPILE=generic -DCMAKE_LINK_STATIC=ON . && make && cd bin && ./xmr-stak
 
 #cmake --build . --config Release --target install
 

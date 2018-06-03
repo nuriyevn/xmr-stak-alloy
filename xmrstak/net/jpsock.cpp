@@ -513,6 +513,7 @@ bool jpsock::cmd_ret_wait(const char* sPacket, opq_json_val& poResult)
 	if(!sck->send(sPacket))
 	{
 		disconnect(); //This will join the other thread;
+        printer::inst()->print_msg(L3, "We got false from 513 jpsock.cpp: !sck->send(sPacket");
 		return false;
 	}
 
@@ -527,19 +528,24 @@ bool jpsock::cmd_ret_wait(const char* sPacket, opq_json_val& poResult)
 	mlock.unlock();
 
 	if(bHaveSocketError)
+    {
+        printer::inst()->print_msg(L3, "We got false from 532 jpsock.cpp: bHaveSocketError");
 		return false;
+    }
 
 	//This means that there was no socket error, but the server is not taking to us
 	if(!bResult)
 	{
 		set_socket_error("CALL error: Timeout while waiting for a reply");
 		disconnect();
+        printer::inst()->print_msg(L3, "We got false from 537 jpsock.cpp: if(!bResult)");
 		return false;
 	}
+	if(bSuccess) {
+        printer::inst()->print_msg(L3, "Line 545.   jpsock.cpp: &prv->oCallValue = %d", poResult.val  );
+		poResult.val = &prv->oCallValue; }
 
-	if(bSuccess)
-		poResult.val = &prv->oCallValue;
-
+    printer::inst()->print_msg(L3, "We got false from 549 jpsock.cpp: return bSuccess;");
 	return bSuccess;
 }
 
@@ -630,13 +636,13 @@ bool jpsock::cmd_submit(const char* sJobId, uint32_t iNonce, const uint8_t* bRes
 	char sBackend[64] = {0};
 	char sHashcount[128] = {0};
 
-	if(ext_backend)
+	//if(ext_backend)
 		snprintf(sBackend, sizeof(sBackend), ",\"backend\":\"%s\"", backend_name);
 
-	if(ext_hashcount)
+	//if(ext_hashcount)
 		snprintf(sHashcount, sizeof(sHashcount), ",\"hashcount\":%llu,\"hashcount_total\":%llu", int_port(backend_hashcount), int_port(total_hashcount));
 
-	if(ext_algo)
+	//if(ext_algo)
 	{
 		const char* algo_name;
 		switch(algo)
@@ -679,6 +685,8 @@ bool jpsock::cmd_submit(const char* sJobId, uint32_t iNonce, const uint8_t* bRes
 		sMinerId, sJobId, sNonce, sResult, sBackend, sHashcount, sAlgo);
 
 	opq_json_val oResult(nullptr);
+    
+    printer::inst()->print_msg(L3, "This returns false");
 	return cmd_ret_wait(cmd_buffer, oResult);
 }
 

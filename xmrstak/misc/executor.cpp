@@ -400,7 +400,11 @@ void executor::on_pool_have_job(size_t pool_id, pool_job& oPoolJob)
 				printer::inst()->print_msg(L2, "Pool switched.");
 		}
 		else
+        {
 			printer::inst()->print_msg(L2, "Pool logged in.");
+            printer::inst()->print_msg(L2, "Hello world");
+            printer::inst()->print_msg(L2, "Hello world2");
+        }
 	}
 	else
 		printer::inst()->print_msg(L3, "New block detected.");
@@ -456,6 +460,9 @@ void executor::on_miner_result(size_t pool_id, job_result& oResult)
 			printer::inst()->print_msg(L3, "Result rejected by the pool.");
 
 			std::string error = pool->get_call_error();
+            
+            printer::inst()->print_msg(L3, "Here is what comes from pool:");
+            printer::inst()->print_msg(L3, error.c_str());
 
 			if(strncasecmp(error.c_str(), "Unauthenticated", 15) == 0)
 			{
